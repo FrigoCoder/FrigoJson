@@ -3,7 +3,7 @@
  https://github.com/antlr/grammars-v4/blob/master/json/JSON.g4
  */
 
-grammar json;
+grammar Json;
 
 json: array | object;
 array: '[' ']' | '[' value (',' value)* ']';
