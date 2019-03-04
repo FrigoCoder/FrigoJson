@@ -8,14 +8,14 @@ grammar json;
 json: array | object;
 array: '[' ']' | '[' value (',' value)* ']';
 object: '{' '}' | '{' pair (',' pair)* '}';
-value: array | BOOLEAN | NULL | number | object | STRING;
+value: array | BOOLEAN | NULL | NUMBER | object | STRING;
 pair: STRING ':' value;
 
 BOOLEAN: 'true' | 'false';
 
 NULL: 'null';
 
-number: SIGN? INT ('.' FRAC)? EXP?;
+NUMBER: SIGN? INT ('.' FRAC)? EXP?;
 fragment SIGN: '-';
 fragment INT: '0' | [1-9][0-9]*;
 fragment FRAC: [0-9]+;
