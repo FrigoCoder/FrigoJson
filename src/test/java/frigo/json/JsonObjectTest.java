@@ -48,7 +48,7 @@ public class JsonObjectTest {
     }
 
     @Test
-    public void getBoolean_returns_boolean_or_throws_for_non_booleans() {
+    public void getBoolean_returns_boolean_or_throws_for_other_types() {
         for (String key : json.keys()) {
             When(key)
                     .Case("boolean1", () -> assertThat(json.getBoolean(key), is(true)))
@@ -58,7 +58,27 @@ public class JsonObjectTest {
     }
 
     @Test
-    public void getInt_returns_integer_or_throws_for_non_integers() {
+    public void getDouble_returns_double_or_throws_for_other_types() {
+        for (String key : json.keys()) {
+            When(key)
+                    .Case("double1", () -> assertThat(json.getDouble(key), is(1.0)))
+                    .Case("double2", () -> assertThat(json.getDouble(key), is(2.0)))
+                    .Else(() -> assertThrows(JsonException.class, () -> json.getDouble(key)));
+        }
+    }
+
+    @Test
+    public void getFloat_returns_float_or_throws_for_other_types() {
+        for (String key : json.keys()) {
+            When(key)
+                    .Case("float1", () -> assertThat(json.getFloat(key), is(1.0f)))
+                    .Case("float2", () -> assertThat(json.getFloat(key), is(2.0f)))
+                    .Else(() -> assertThrows(JsonException.class, () -> json.getFloat(key)));
+        }
+    }
+
+    @Test
+    public void getInt_returns_integer_or_throws_for_other_types() {
         for (String key : json.keys()) {
             When(key)
                     .Case("integer1", () -> assertThat(json.getInt(key), is(1)))
@@ -68,7 +88,17 @@ public class JsonObjectTest {
     }
 
     @Test
-    public void getString_returns_string_or_throws_for_non_strings() {
+    public void getJsonObject_returns_JsonObject_or_throws_for_other_types() {
+        for (String key : json.keys()) {
+            When(key)
+                    .Case("object1", () -> assertThat(json.getJsonObject(key), sameInstance(obj1)))
+                    .Case("object2", () -> assertThat(json.getJsonObject(key), sameInstance(obj2)))
+                    .Else(() -> assertThrows(JsonException.class, () -> json.getJsonObject(key)));
+        }
+    }
+
+    @Test
+    public void getString_returns_string_or_throws_for_other_types() {
         for (String key : json.keys()) {
             When(key)
                     .Case("string1", () -> assertThat(json.getString(key), is("value1")))
