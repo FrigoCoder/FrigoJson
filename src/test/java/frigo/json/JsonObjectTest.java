@@ -49,11 +49,11 @@ public class JsonObjectTest {
 
     @Test
     public void getBoolean_returns_boolean_or_throws_for_non_booleans() {
-        for (String current : json.keys()) {
-            When(current)
-                    .Case("boolean1", key -> assertThat(json.getBoolean(key), is(true)))
-                    .Case("boolean2", key -> assertThat(json.getBoolean(key), is(false)))
-                    .Else((String key) -> assertThrows(JsonException.class, () -> json.getBoolean(key)))
+        for (String key : json.keys()) {
+            When(key)
+                    .Case("boolean1", () -> assertThat(json.getBoolean(key), is(true)))
+                    .Case("boolean2", () -> assertThat(json.getBoolean(key), is(false)))
+                    .Else(() -> assertThrows(JsonException.class, () -> json.getBoolean(key)))
                     .Run();
         }
     }
