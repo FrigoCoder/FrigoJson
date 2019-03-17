@@ -2,8 +2,7 @@ package frigo.json;
 
 import lombok.SneakyThrows;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class When {
 
@@ -12,27 +11,37 @@ public class When {
     }
 
     private Object value;
-    private Map<Object, WhenHandler> map = new LinkedHashMap<>();
-    private WhenHandler otherwise = () -> {
-    };
+    private boolean used;
 
     public When(Object value) {
         this.value = value;
     }
 
-    public <T> When Case(T key, WhenHandler consumer) {
-        map.put(key, consumer);
-        return this;
-    }
-
-    public <T> When Else(WhenHandler consumer) {
-        otherwise = consumer;
+    @SneakyThrows
+    public When Case(Object key, Callback callback) {
+        if (!used && Objects.equals(value, key)) {
+            used = true;
+            callback.apply();
+        }
         return this;
     }
 
     @SneakyThrows
-    public void Run() {
-        map.getOrDefault(value, otherwise).apply();
+    public When Else(Callback callback) {
+        if (!used) {
+            used = true;
+            callback.apply();
+        }
+        return this;
+    }
+
+    @SneakyThrows
+    public When Throw() {
+        if (!used) {
+            used = true;
+            throw new IllegalArgumentException("No case to handle " + value);
+        }
+        return this;
     }
 
 }

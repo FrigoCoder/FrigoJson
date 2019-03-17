@@ -53,42 +53,28 @@ public class JsonObjectTest {
             When(key)
                     .Case("boolean1", () -> assertThat(json.getBoolean(key), is(true)))
                     .Case("boolean2", () -> assertThat(json.getBoolean(key), is(false)))
-                    .Else(() -> assertThrows(JsonException.class, () -> json.getBoolean(key)))
-                    .Run();
+                    .Else(() -> assertThrows(JsonException.class, () -> json.getBoolean(key)));
         }
     }
 
     @Test
     public void getInt_returns_integer_or_throws_for_non_integers() {
-        assertThrows(JsonException.class, () -> json.getInt("boolean1"));
-        assertThrows(JsonException.class, () -> json.getInt("boolean2"));
-        assertThat(json.getInt("integer1"), is(1));
-        assertThat(json.getInt("integer2"), is(2));
-        assertThrows(JsonException.class, () -> json.getInt("double1"));
-        assertThrows(JsonException.class, () -> json.getInt("double2"));
-        assertThrows(JsonException.class, () -> json.getInt("float1"));
-        assertThrows(JsonException.class, () -> json.getInt("float2"));
-        assertThrows(JsonException.class, () -> json.getInt("object1"));
-        assertThrows(JsonException.class, () -> json.getInt("object2"));
-        assertThrows(JsonException.class, () -> json.getInt("string1"));
-        assertThrows(JsonException.class, () -> json.getInt("string2"));
+        for (String key : json.keys()) {
+            When(key)
+                    .Case("integer1", () -> assertThat(json.getInt(key), is(1)))
+                    .Case("integer2", () -> assertThat(json.getInt(key), is(2)))
+                    .Else(() -> assertThrows(JsonException.class, () -> json.getInt(key)));
+        }
     }
-
 
     @Test
     public void getString_returns_string_or_throws_for_non_strings() {
-        assertThrows(JsonException.class, () -> json.getString("boolean1"));
-        assertThrows(JsonException.class, () -> json.getString("boolean2"));
-        assertThrows(JsonException.class, () -> json.getString("integer1"));
-        assertThrows(JsonException.class, () -> json.getString("integer2"));
-        assertThrows(JsonException.class, () -> json.getString("double1"));
-        assertThrows(JsonException.class, () -> json.getString("double2"));
-        assertThrows(JsonException.class, () -> json.getString("float1"));
-        assertThrows(JsonException.class, () -> json.getString("float2"));
-        assertThrows(JsonException.class, () -> json.getString("object1"));
-        assertThrows(JsonException.class, () -> json.getString("object2"));
-        assertThat(json.getString("string1"), is("value1"));
-        assertThat(json.getString("string2"), is("value2"));
+        for (String key : json.keys()) {
+            When(key)
+                    .Case("string1", () -> assertThat(json.getString(key), is("value1")))
+                    .Case("string2", () -> assertThat(json.getString(key), is("value2")))
+                    .Else(() -> assertThrows(JsonException.class, () -> json.getString(key)));
+        }
     }
 
 

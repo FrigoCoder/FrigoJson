@@ -1,6 +1,6 @@
 package frigo.json;
 
-public interface WhenHandler {
+public interface Callback {
 
     void apply() throws Exception;
 
