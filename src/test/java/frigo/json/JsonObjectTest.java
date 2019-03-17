@@ -48,10 +48,10 @@ public class JsonObjectTest {
 
     @Test
     public void getBoolean_returns_boolean_or_throws_for_non_booleans() {
-        When<String> cases = new When<String>()
+        When cases = new When()
                 .when("boolean1", key -> assertThat(json.getBoolean(key), is(true)))
                 .when("boolean2", key -> assertThat(json.getBoolean(key), is(false)))
-                .otherwise(key -> assertThrows(JsonException.class, () -> json.getBoolean(key)));
+                .otherwise((String key) -> assertThrows(JsonException.class, () -> json.getBoolean(key)));
         json.keys().forEach(cases);
     }
 

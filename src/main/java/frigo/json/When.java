@@ -4,24 +4,24 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class When<T> implements Consumer<T> {
+public class When implements Consumer<Object> {
 
-    private Map<T, Consumer<T>> map = new LinkedHashMap<>();
-    private Consumer<T> otherwise = (key) -> {
+    private Map<Object, Consumer<Object>> map = new LinkedHashMap<>();
+    private Consumer<Object> otherwise = key -> {
     };
 
-    public When<T> when(T key, Consumer<T> consumer) {
-        map.put(key, consumer);
+    public <T> When when(T key, Consumer<T> consumer) {
+        map.put(key, object -> consumer.accept((T) object));
         return this;
     }
 
-    public When<T> otherwise(Consumer<T> consumer) {
-        otherwise = consumer;
+    public <T> When otherwise(Consumer<T> consumer) {
+        otherwise = object -> consumer.accept((T) object);
         return this;
     }
 
     @Override
-    public void accept(T key) {
+    public void accept(Object key) {
         map.getOrDefault(key, otherwise).accept(key);
     }
 
